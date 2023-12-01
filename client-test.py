@@ -7,7 +7,6 @@ from tkinter.scrolledtext import ScrolledText  # 导入多行文本框用到的�
 import time
 import requests
 from tkinter import filedialog
-# import vachat
 import os
 from time import sleep
 from PIL import ImageGrab
@@ -104,10 +103,10 @@ b2 = ''
 b3 = ''
 b4 = ''
 # 将图片打开存入变量中
-p1 = tkinter.PhotoImage(file='The-chat-room-master/emoji/facepalm.png')
-p2 = tkinter.PhotoImage(file='The-chat-room-master/emoji/smirk.png')
-p3 = tkinter.PhotoImage(file='The-chat-room-master/emoji/concerned.png')
-p4 = tkinter.PhotoImage(file='The-chat-room-master/emoji/smart.png')
+p1 = tkinter.PhotoImage(file='lab4/emoji/facepalm.png')
+p2 = tkinter.PhotoImage(file='lab4/emoji/smirk.png')
+p3 = tkinter.PhotoImage(file='lab4/emoji/concerned.png')
+p4 = tkinter.PhotoImage(file='lab4/emoji/smart.png')
 # 用字典将标记与表情图片一一对应, 用于后面接收标记判断表情贴图
 dic = {'aa**': p1, 'bb**': p2, 'cc**': p3, 'dd**': p4}
 ee = 0  # 判断表情面板开关的标志
@@ -182,7 +181,7 @@ def fileGet(name):
     ss2.connect((IP, PORT3))
     message = 'get ' + name
     ss2.send(message.encode())
-    fileName = '.\\Client_image_cache\\' + name
+    fileName = 'lab4/Client_image_cache/' + name
     print('Start downloading image!')
     print('Waiting.......')
     with open(fileName, 'wb') as f:
@@ -239,96 +238,6 @@ def picture():
 pBut = tkinter.Button(root, text='Image', command=picture)
 pBut.place(x=85, y=320, width=60, height=30)
 
-
-# # 截屏函数如下所示
-# class MyCapture:
-#     def __init__(self, png):
-#         # 变量X和Y用来记录鼠标左键按下的位置
-#         self.X = tkinter.IntVar(value=0)
-#         self.Y = tkinter.IntVar(value=0)
-#         # 屏幕尺寸
-#         screenWidth = root.winfo_screenwidth()
-#         screenHeight = root.winfo_screenheight()
-#         # 创建顶级组件容器
-#         self.top = tkinter.Toplevel(root, width=screenWidth, height=screenHeight)
-#         # 不显示最大化、最小化按钮
-#         self.top.overrideredirect(True)
-#         self.canvas = tkinter.Canvas(self.top, bg='white', width=screenWidth, height=screenHeight)
-#         # 显示全屏截图，在全屏截图上进行区域截图
-#         self.image = tkinter.PhotoImage(file=png)
-#         self.canvas.create_image(screenWidth / 2, screenHeight / 2, image=self.image)
-#         self.sel = None
-
-#         # 鼠标左键按下的位置
-
-#         def onLeftButtonDown(event):
-#             self.X.set(event.x)
-#             self.Y.set(event.y)
-#             # 开始截图
-#             self.sel = True
-
-#         self.canvas.bind('<Button-1>', onLeftButtonDown)
-
-#         # 鼠标左键移动，显示选取的区域
-#         def onLeftButtonMove(event):
-#             if not self.sel:
-#                 return
-#             global lastDraw
-#             try:
-#                 # 删除刚画完的图形，要不然鼠标移动的时候是黑乎乎的一片矩形
-#                 self.canvas.delete(lastDraw)
-#             except Exception as e:
-#                 print(e)
-#             lastDraw = self.canvas.create_rectangle(self.X.get(), self.Y.get(), event.x, event.y, outline='black')
-
-#         self.canvas.bind('<B1-Motion>', onLeftButtonMove)
-
-#         # 获取鼠标左键抬起的位置，保存区域截图
-#         def onLeftButtonUp(event):
-#             self.sel = False
-#             try:
-#                 self.canvas.delete(lastDraw)
-#             except Exception as e:
-#                 print(e)
-#             sleep(0.1)
-#             # 考虑鼠标左键从右下方按下而从左上方抬起的截图
-#             left, right = sorted([self.X.get(), event.x])
-#             top, bottom = sorted([self.Y.get(), event.y])
-#             pic = ImageGrab.grab((left + 1, top + 1, right, bottom))
-#             # 弹出保存截图对话框
-#             fileName = tkinter.filedialog.asksaveasfilename(title='Save screenshot',
-#                                                             filetypes=[('image', '*.jpg *.png')])
-#             if fileName:
-#                 pic.save(fileName)
-#             # 关闭当前窗口
-#             self.top.destroy()
-
-#         self.canvas.bind('<ButtonRelease-1>', onLeftButtonUp)
-#         # 让canvas充满窗口，并随窗口自动适应大小
-#         self.canvas.pack(fill=tkinter.BOTH, expand=tkinter.YES)
-
-
-# # 开始截图
-# def buttonCaptureClick():
-#     # 最小化主窗口
-#     root.state('icon')
-#     sleep(0.2)
-#     filename = 'temp.png'
-#     # grab()方法默认对全屏幕进行截图
-#     im = ImageGrab.grab()
-#     im.save(filename)
-#     im.close()
-#     # 显示全屏幕截图
-#     w = MyCapture(filename)
-#     sBut.wait_window(w.top)
-#     # 截图结束，恢复主窗口，并删除临时的全屏幕截图文件
-#     root.state('normal')
-#     os.remove(filename)
-
-
-# # 创建截屏按钮
-# sBut = tkinter.Button(root, text='Capture', command=buttonCaptureClick)
-# sBut.place(x=125, y=320, width=60, height=30)
 
 # 文件功能代码部分
 # 将在文件功能窗口用到的组件名都列出来, 方便重新打开时会对面板进行更新
@@ -500,51 +409,13 @@ entry = tkinter.Entry(root, width=120, textvariable=a)
 entry.place(x=5, y=350, width=570, height=40)
 
 
-def call_robot(url, apikey, msg):
-    data = {
-        "reqType": 0,
-        "perception": {
-            # 用户输入文文信息
-            "inputText": {  # inputText文本信息
-                "text": msg
-            },
-            # 用户输入图片url
-            "inputImage": {  # 图片信息，后跟参数信息为url地址，string类型
-                "url": "https://cn.bing.com/images/"
-            },
-            # 用户输入音频地址信息
-            "inputMedia": {  # 音频信息，后跟参数信息为url地址，string类型
-                "url": "https://www.1ting.com/"
-            },
-            # 客户端属性信息
-            "selfInfo": {  # location 为selfInfo的参数信息，
-                "location": {  # 地理位置信息
-                    "city": "杭州",  # 所在城市，不允许为空
-                    "province": "浙江省",  # 所在省份，允许为空
-                    "street": "灵隐街道"  # 所在街道，允许为空
-                }
-            },
-        },
-        "userInfo": {
-            "apiKey": "ee19328107fa41e987a42a064a68d0da",  # 你注册的apikey,机器人标识,32位
-            "userId": "Brandon"  # 随便填，用户的唯一标识，长度小于等于32位
-        }
-    }
-    headers = {'content-type': 'application/json'}  # 必须是json
-    r = requests.post(url, headers=headers, data=json.dumps(data))
-    return r.json()
-
-
 def send(*args):
     # 没有添加的话发送信息时会提示没有聊天对象
     users.append('------Group chat-------')
-    users.append('Robot')
     print(chat)
     if chat not in users:
         tkinter.messagebox.showerror('Send error', message='There is nobody to talk to!')
         return
-    if chat == 'Robot':
-        print('Robot')
     if chat == user:
         tkinter.messagebox.showerror('Send error', message='Cannot talk with yourself in private!')
         return
@@ -557,157 +428,6 @@ def send(*args):
 button = tkinter.Button(root, text='Send', command=send)
 button.place(x=515, y=353, width=60, height=30)
 root.bind('<Return>', send)  # 绑定回车发送信息
-
-# # 视频聊天部分
-# IsOpen = False    # 判断视频/音频的服务器是否已打开
-# Resolution = 0    # 图像传输的分辨率 0-4依次递减
-# Version = 4       # 传输协议版本 IPv4/IPv6
-# ShowMe = True     # 视频聊天时是否打开本地摄像头
-# AudioOpen = True  # 是否打开音频聊天
-
-
-# def video_invite():
-#     global IsOpen, Version, AudioOpen
-#     if Version == 4:
-#         host_name = socket.gethostbyname(socket.getfqdn(socket.gethostname()))
-#     else:
-#         host_name = [i['addr'] for i in ifaddresses(interfaces()[-2]).setdefault(AF_INET6, [{'addr': 'No IP addr'}])][
-#             -1]
-
-#     invite = 'INVITE' + host_name + ':;' + user + ':;' + chat
-#     s.send(invite.encode())
-#     if not IsOpen:
-#         vserver = vachat.Video_Server(10087, Version)
-#         if AudioOpen:
-#             aserver = vachat.Audio_Server(10088, Version)
-#             aserver.start()
-#         vserver.start()
-#         IsOpen = True
-
-
-# def video_accept(host_name):
-#     global IsOpen, Resolution, ShowMe, Version, AudioOpen
-
-#     vclient = vachat.Video_Client(host_name, 10087, ShowMe, Resolution, Version)
-#     if AudioOpen:
-#         aclient = vachat.Audio_Client(host_name, 10088, Version)
-#         aclient.start()
-#     vclient.start()
-#     IsOpen = False
-
-
-# def video_invite_window(message, inviter_name):
-#     invite_window = tkinter.Toplevel()
-#     invite_window.geometry('300x100')
-#     invite_window.title('Invitation')
-#     label1 = tkinter.Label(invite_window, bg='#f0f0f0', width=20, text=inviter_name)
-#     label1.pack()
-#     label2 = tkinter.Label(invite_window, bg='#f0f0f0', width=20, text='invites you to video chat!')
-#     label2.pack()
-
-#     def accept_invite():
-#         invite_window.destroy()
-#         video_accept(message[message.index('INVITE') + 6:])
-
-#     def refuse_invite():
-#         invite_window.destroy()
-
-#     Refuse = tkinter.Button(invite_window, text="Refuse", command=refuse_invite)
-#     Refuse.place(x=60, y=60, width=60, height=25)
-#     Accept = tkinter.Button(invite_window, text="Accept", command=accept_invite)
-#     Accept.place(x=180, y=60, width=60, height=25)
-
-
-# def video_connect_option():
-#     global Resolution, ShowMe, Version, AudioOpen
-
-#     video_connect_option = tkinter.Toplevel()
-#     video_connect_option.geometry('150x450')
-#     video_connect_option.title('Connection option')
-
-#     var1 = tkinter.StringVar()
-#     label1 = tkinter.Label(video_connect_option, bg='#f0f0f0', width=20, text='Resolution   ')
-#     label1.pack()
-
-#     def print_resolution():
-#         global Resolution
-#         Resolution = var1.get()
-#         label1.config(text='Resolution   ' + Resolution)
-
-#     r0 = tkinter.Radiobutton(video_connect_option, text='0', variable=var1, value='0', command=print_resolution)
-#     r0.pack()
-#     r1 = tkinter.Radiobutton(video_connect_option, text='1', variable=var1, value='1', command=print_resolution)
-#     r1.pack()
-#     r2 = tkinter.Radiobutton(video_connect_option, text='2', variable=var1, value='2', command=print_resolution)
-#     r2.pack()
-#     r3 = tkinter.Radiobutton(video_connect_option, text='3', variable=var1, value='3', command=print_resolution)
-#     r3.pack()
-#     r4 = tkinter.Radiobutton(video_connect_option, text='4', variable=var1, value='4', command=print_resolution)
-#     r4.pack()
-
-#     var2 = tkinter.StringVar()
-#     label2 = tkinter.Label(video_connect_option, bg='#f0f0f0', width=20, text='Protocol version   ')
-#     label2.pack()
-
-#     def print_version():
-#         global Version
-#         Version = var2.get()
-#         label2.config(text='Version   IPv' + Version)
-
-#     v0 = tkinter.Radiobutton(video_connect_option, text='IPv4', variable=var2, value='4', command=print_version)
-#     v0.pack()
-#     v1 = tkinter.Radiobutton(video_connect_option, text='IPv6', variable=var2, value='6', command=print_version)
-#     v1.pack()
-
-#     var3 = tkinter.StringVar()
-#     label3 = tkinter.Label(video_connect_option, bg='#f0f0f0', width=20, text='Show yourself   ')
-#     label3.pack()
-
-#     def print_show():
-#         global ShowMe
-#         if var3.get() == '1':
-#             ShowMe = True
-#             txt = 'Yes'
-#         else:
-#             ShowMe = False
-#             txt = 'No'
-#         label3.config(text='Show yourself   ' + txt)
-
-#     s0 = tkinter.Radiobutton(video_connect_option, text='Yes', variable=var3, value='1', command=print_show)
-#     s0.pack()
-#     s1 = tkinter.Radiobutton(video_connect_option, text='No', variable=var3, value='0', command=print_show)
-#     s1.pack()
-
-#     var4 = tkinter.StringVar()
-#     label4 = tkinter.Label(video_connect_option, bg='#f0f0f0', width=20, text='Audio open   ')
-#     label4.pack()
-
-#     def print_audio():
-#         global AudioOpen
-#         if var4.get() == '1':
-#             AudioOpen = True
-#             txt = 'Yes'
-#         else:
-#             AudioOpen = False
-#             txt = 'No'
-#         label4.config(text='Audio open   ' + txt)
-
-#     a0 = tkinter.Radiobutton(video_connect_option, text='Yes', variable=var4, value='1', command=print_audio)
-#     a0.pack()
-#     a1 = tkinter.Radiobutton(video_connect_option, text='No', variable=var4, value='0', command=print_audio)
-#     a1.pack()
-
-#     def option_enter():
-#         video_connect_option.destroy()
-
-#     Enter = tkinter.Button(video_connect_option, text="Enter", command=option_enter)
-#     Enter.place(x=10, y=400, width=60, height=35)
-#     Start = tkinter.Button(video_connect_option, text="Start", command=video_invite)
-#     Start.place(x=80, y=400, width=60, height=35)
-
-
-# vbutton = tkinter.Button(root, text="Video", command=video_connect_option)
-# vbutton.place(x=245, y=320, width=60, height=30)
 
 
 # 私聊功能
@@ -745,7 +465,7 @@ def recv():
             listbox1.insert(tkinter.END, number)
             listbox1.itemconfig(tkinter.END, fg='green', bg="#f0f0ff")
             listbox1.insert(tkinter.END, '------Group chat-------')
-            listbox1.insert(tkinter.END, 'Robot')
+            # listbox1.insert(tkinter.END, 'Robot')
             listbox1.itemconfig(tkinter.END, fg='green')
             for i in range(len(data)):
                 listbox1.insert(tkinter.END, (data[i]))
@@ -755,14 +475,6 @@ def recv():
             data1 = data[0].strip()  # 消息
             data2 = data[1]  # 发送信息的用户名
             data3 = data[2]  # 聊天对象
-            if 'INVITE' in data1:
-                if data3 == 'Robot':
-                    tkinter.messagebox.showerror('Connect error', message='Unable to make video chat with robot!')
-                elif data3 == '------Group chat-------':
-                    tkinter.messagebox.showerror('Connect error', message='Group video chat is not supported!')
-                elif (data2 == user and data3 == user) or (data2 != user):
-                    video_invite_window(data1, data2)
-                continue
             markk = data1.split('：')[1]
             # 判断是不是图片
             pic = markk.split('#')
@@ -792,15 +504,6 @@ def recv():
                         listbox.insert(tkinter.END, data1, 'green')  # END将信息加在最后一行
                     if len(data) == 4:
                         listbox.insert(tkinter.END, '\n' + data[3], 'pink')
-                elif data3 == 'Robot' and data2 == user:
-                    print('Here:Robot')
-                    apikey = 'ee19328107fa41e987a42a064a68d0da'
-                    url = 'http://openapi.tuling123.com/openapi/api/v2'
-                    print('msg = ', data1)
-                    listbox.insert(tkinter.END, data1, 'blue')
-                    reply = call_robot(url, apikey, data1.split('：')[1])
-                    reply_txt = '\nRobot:' + reply['results'][0]['values']['text']
-                    listbox.insert(tkinter.END, reply_txt, 'pink')
                 elif data2 == user or data3 == user:  # 显示私聊
                     listbox.insert(tkinter.END, data1, 'red')  # END将信息加在最后一行
             listbox.see(tkinter.END)  # 显示在最后

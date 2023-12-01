@@ -5,53 +5,17 @@ import json  # json.dumps(some)打包   json.loads(some)解包
 import time
 import os
 import os.path
-import requests
+# import requests
 import sys
 
-# IP = socket.gethostbyname(socket.getfqdn(socket.gethostname()))
-IP = '192.168.226.128'
+IP = socket.gethostbyname(socket.getfqdn(socket.gethostname()))
+# IP = '192.168.226.128'
 PORT = 50007
 apikey = 'ee19328107fa41e987a42a064a68d0da'
 url = 'http://openapi.tuling123.com/openapi/api/v2'
 que = queue.Queue()                             # 用于存放客户端发送的信息的队列
 users = []                                      # 用于存放在线用户的信息  [conn, user, addr]
 lock = threading.Lock()                         # 创建锁, 防止多个线程写入数据的顺序打乱
-
-
-# def call_robot(url, apikey, msg):
-#     data = {
-#         "reqType": 0,
-#         "perception": {
-#             "inputText": {  # inputText文本信息
-#                 "text": msg
-#             },
-#             # 用户输入图片url
-#             "inputImage": {  # 图片信息，后跟参数信息为url地址，string类型
-#                 "url": "https://cn.bing.com/images/"
-#             },
-#             # 用户输入音频地址信息
-#             "inputMedia": {  # 音频信息，后跟参数信息为url地址，string类型
-#                 "url": "https://www.1ting.com/"
-#             },
-#             # 客户端属性信息
-#             "selfInfo": {  # location 为selfInfo的参数信息，
-#                 "location": {  # 地理位置信息
-#                     "city": "杭州",  # 所在城市，不允许为空
-#                     "province": "浙江省",  # 所在省份，允许为空
-#                     "street": "灵隐街道"  # 所在街道，允许为空
-#                 }
-#             },
-#         },
-#         "userInfo": {  # userInfo用户参数，不允许为空
-#             "apiKey": "ee19328107fa41e987a42a064a68d0da",  # 你注册的apikey,机器人标识,32位
-#             "userId": "Brandon"  # 随便填，用户的唯一标识，长度小于等于32位
-#         }
-#     }
-#     headers = {'content-type': 'application/json'}  # 必须是json
-#     r = requests.post(url, headers=headers, data=json.dumps(data))
-#     return r.json()
-
-#####################################################################################
 
 
 # 将在线用户存入online列表并返回
@@ -137,20 +101,7 @@ class ChatServer(threading.Thread):
                         for j in range(len(users)):
                             if message[0] == users[j][2]:
                                 print(' this: message is from user[{}]'.format(j))
-                                if '@Robot' in message[1] and reply_text == '':
-                                    
-                                    msg = message[1].split(':;')[0]
-                                    reply = call_robot(url, apikey, msg)
-                                    reply_text = reply['results'][0]['values']['text']
-                                    data = ' ' + users[j][1] + '：' + message[1] + ':;' + 'Robot：' + '@' + \
-                                           users[j][1] + ',' + reply_text
-                                    break
-                                elif '@Robot' in message[1] and (not reply_text == ''):
-                                    data = ' ' + users[j][1] + '：' + message[1] + ':;' + 'Robot：' + '@' + \
-                                           users[j][1] + ',' + reply_text
-                                else:
-                                    data = ' ' + users[j][1] + '：' + message[1]
-                                    break      
+                                data = ' ' + users[j][1] + '：' + message[1]
                         users[i][0].send(data.encode())
                 # data = data.split(':;')[0]
                 if isinstance(message[1], list):  # 同上
@@ -251,7 +202,7 @@ class FileServer(threading.Thread):
         pat = '\\'.join(pat.split())
         # 如果切换目录超出范围则退回切换前目录
         if 'resources' not in path:
-            f = r'/home/haha/work/The-chat-room-master/resources'
+            f = r'/home/haha/work/lab4/resources'
             os.chdir(f)
             pat = 'resources'
         conn.send(pat.encode())
