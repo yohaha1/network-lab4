@@ -11,7 +11,7 @@ import sys
 IP = socket.gethostbyname(socket.getfqdn(socket.gethostname()))
 # IP = '192.168.226.128'
 PORT = 50007
-apikey = 'ee19328107fa41e987a42a064a68d0da'
+apikey = 'xxx'
 url = 'http://openapi.tuling123.com/openapi/api/v2'
 que = queue.Queue()                             # 用于存放客户端发送的信息的队列
 users = []                                      # 用于存放在线用户的信息  [conn, user, addr]
